@@ -1,33 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>Change-Background-Color</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Background Color</title>
   <!-- Bootstrap CSS v5.2.0-beta1 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
     integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .custom-header {
+      background-color: #343a40;
+      color: #ffc107;
+      padding: 20px 0;
+    }
+    .custom-button {
+      background-color: #198754;
+      color: #fff;
+      border-radius: 20px;
+    }
+    .custom-button:hover {
+      background-color: #155724;
+    }
+  </style>
 </head>
-
 <body>
-  <div class="bg-secondary text-center">
-    <h1 class="text-warning">Page Colour Changer</h1>
-    <p class="text-info">Change the page colour by clicking the button</p>
+  <div class="container">
+    <div class="custom-header text-center">
+      <h1>Page Colour Changer</h1>
+      <p>Change the page colour by clicking the button</p>
+    </div>
     <hr class="my-2">
-    <p id="cn" class="alert alert-warning" style="display:none;"></p>
-    <p class="lead">
-      <button id="btn1" class="btn btn-success rounded-4">Click Me <span id="times"
-          class="badge text-bg-light"></span></button>
-    </p>
+    <div class="text-center">
+      <p id="cn" class="alert alert-warning" style="display:none;"></p>
+      <p class="lead">
+        <button id="btn1" class="btn custom-button">Click Me <span id="times" class="badge bg-light text-dark"></span></button>
+      </p>
+    </div>
   </div>
-
-
-
-
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
     integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
@@ -37,5 +49,4 @@
     crossorigin="anonymous"></script>
   <script src="./Scripts/myscript.js"></script>
 </body>
-
 </html>
