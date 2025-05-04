@@ -3,29 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Background Color</title>
+  <title>Color Palette Generator</title>
   <!-- Bootstrap CSS v5.2.0-beta1 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
     integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    body {
+      min-height: 100vh;
+      transition: background-color 0.5s ease;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+    }
+    .color-history {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .color-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+    }
+    .color-box:hover {
+      transform: scale(1.1);
+    }
+    .color-info {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .color-info h3 {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .color-info p {
+      color: #444;
+      font-weight: 500;
+    }
+    .copy-btn {
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #666;
+    }
+    .copy-btn:hover {
+      transform: scale(1.1);
+      color: #333;
+    }
+    .copy-btn.copied {
+      color: #28a745;
+    }
+    .color-preview {
+      width: 100%;
+      height: 100px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .btn-generate {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-weight: 600;
+    }
+    .btn-generate:hover {
+      transform: translateY(-2px);
+    }
+    .btn-generate::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .btn-generate:hover::after {
+      transform: translateX(100%);
+    }
+    .page-title {
+      font-family: 'Arial', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+    }
+    .page-title::after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #fff, transparent);
+      bottom: -5px;
+      left: 25%;
+      animation: titleUnderline 2s infinite;
+    }
+    @keyframes titleUnderline {
+      0% { transform: scaleX(0.5); opacity: 0; }
+      50% { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(0.5); opacity: 0; }
+    }
+    .card-header {
+      background: rgba(0, 0, 0, 0.8) !important;
+      border-bottom: none;
+    }
+    .recent-colors-title {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container py-5">
-    <div class="card shadow-sm">
-      <div class="card-header bg-dark text-warning text-center py-4">
-        <h1 class="display-4">Page Colour Changer</h1>
-        <p class="lead mb-0">Change the page colour by clicking the button</p>
+<body>
+  <div class="container">
+    <div class="card shadow-lg animate__animated animate__fadeIn">
+      <div class="card-header text-white text-center py-4">
+        <h1 class="display-4 page-title animate__animated animate__fadeInDown">Color Palette Generator</h1>
+        <p class="lead mb-0 animate__animated animate__fadeInUp animate__delay-1s">Generate beautiful color palettes with a single click</p>
       </div>
       <div class="card-body text-center py-5">
-        <p id="cn" class="alert alert-warning d-none"></p>
-        <div class="d-grid gap-2 col-6 mx-auto">
-          <button id="btn1" class="btn btn-success btn-lg rounded-pill">
-            Click Me 
-            <span id="times" class="badge bg-light text-dark ms-2"></span>
+        <div class="color-preview mb-4 animate__animated animate__fadeIn animate__delay-1s" id="colorPreview"></div>
+        
+        <div class="color-info animate__animated animate__fadeIn animate__delay-2s">
+          <h3 class="mb-3" id="colorName">Color Name</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="mb-2">RGB: <span id="rgbValue">rgb(0, 0, 0)</span></p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-2">HEX: <span id="hexValue">#000000</span> 
+                <i class="fas fa-copy copy-btn" id="copyHex"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+          <button id="btn1" class="btn btn-primary btn-lg rounded-pill btn-generate animate__animated animate__fadeIn animate__delay-3s">
+            Generate New Color
+            <span id="times" class="badge bg-light text-dark ms-2">0</span>
           </button>
+        </div>
+
+        <div class="mt-4 animate__animated animate__fadeIn animate__delay-4s">
+          <h4 class="recent-colors-title">Recent Colors</h4>
+          <div class="color-history" id="colorHistory"></div>
         </div>
       </div>
     </div>
   </div>
+
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
     integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
